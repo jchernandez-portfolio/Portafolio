@@ -1,7 +1,7 @@
 {
   "comparison_policy": "fail_closed_strong_identity_and_commercial_consistency",
   "currency": "HNL",
-  "published_at_utc": "2026-09-20T18:03:26Z",
+  "published_at_utc": "2026-09-21T19:57:55Z",
   "row_count": 10,
   "rows": [
     {
@@ -302,37 +302,37 @@
       "savings_vs_highest_pct": "33.04"
     },
     {
-      "best_price": "420.95",
-      "best_supermarket_id": "la_colonia",
-      "canonical_gtin": "04022025811030",
-      "canonical_product_id": "prod_gtin_04022025811030",
-      "highest_price": "443.80",
+      "best_price": "77.90",
+      "best_supermarket_id": "walmart",
+      "canonical_gtin": "00884394002495",
+      "canonical_product_id": "prod_gtin_00884394002495",
+      "highest_price": "101.00",
       "offers": [
         {
-          "current_price": "420.95",
-          "is_best_price": true,
+          "current_price": "101.00",
+          "is_best_price": false,
           "location_id": "la_colonia_sps",
-          "source_brand": "Blue Nun",
-          "source_category": "Bebidas",
-          "source_name": "Vino Tinto Blue Nun Merlot 750 Ml",
-          "source_presentation": "750 Ml",
-          "source_record_id": "la_colonia:6857",
+          "source_brand": "Okf",
+          "source_category": "Alimentos",
+          "source_name": "Bebida Okf Aloe Vera Sin Azúcar 1.5 Lt",
+          "source_presentation": "1.5 Lt",
+          "source_record_id": "la_colonia:5455",
           "supermarket_id": "la_colonia"
         },
         {
-          "current_price": "443.80",
-          "is_best_price": false,
+          "current_price": "77.90",
+          "is_best_price": true,
           "location_id": "walmart_sps",
-          "source_brand": "BLUE NUN",
-          "source_category": "Bebidas",
-          "source_name": "Vino Blue Nun Tinto Merlot - 750 ml",
+          "source_brand": "OKF",
+          "source_category": "Alimentos",
+          "source_name": "Bebida Okf Aloe Vera Sin Azucar - 1500 ml",
           "source_presentation": null,
-          "source_record_id": "walmart:28213",
+          "source_record_id": "walmart:26824",
           "supermarket_id": "walmart"
         }
       ],
-      "savings_vs_highest": "22.85",
-      "savings_vs_highest_pct": "5.15"
+      "savings_vs_highest": "23.10",
+      "savings_vs_highest_pct": "22.87"
     }
   ],
   "schema": "precios-sps-safe-portfolio-sample/v1",
@@ -347,8 +347,8 @@
     }
   ],
   "selection_rule": "highest_absolute_savings_within_safe_common_comparable_universe",
-  "source_as_of": "2026-09-20T18:02:08.631387Z",
+  "source_as_of": "2026-09-21T19:55:52.213891Z",
   "source_head_sha": "524e041489459f640b4e1d1e5d23304fa738f292",
   "source_schema": "rpi-consumer-mart/v2",
-  "source_workflow_run_id": 35527732972
+  "source_workflow_run_id": 35647841027
 }
