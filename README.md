@@ -22,13 +22,14 @@ Portafolio/
 ├── .github/workflows/portfolio-frontend-qa.yml
 ├── css/  js/  docs/  tests/
 ├── precios-supermercados-sps/portfolio/   # tarjeta y detalle publicados en el sitio
+├── precios-supermercados-sps/b2c/         # app Compra Inteligente publicada (copia de la del repo precios)
 ├── mundial-2026/portfolio/                # tarjeta, detalle y assets del dashboard
 ├── mundial-2026/dashboard/apps-script/    # código Apps Script que se muestra en el detalle
 ├── index.html
 └── script.js
 ```
 
-El código, los datos, los tests y los workflows de cada proyecto viven en su propio repositorio, dentro de una carpeta con el mismo nombre del proyecto (así sus workflows y rutas no cambiaron). Este repo solo conserva lo que el sitio necesita para mostrarlos. Los datos públicos de precios se leen de la rama `portfolio-data` del repo `precios-supermercados-sps`.
+El código, los datos, los tests y los workflows de cada proyecto viven en su propio repositorio, dentro de una carpeta con el mismo nombre del proyecto (así sus workflows y rutas no cambiaron). Este repo solo conserva lo que el sitio necesita para mostrarlos. La app **Compra Inteligente** (`precios-supermercados-sps/b2c/`) se publica aquí como copia de la carpeta `b2c/` del repo `precios-supermercados-sps`: cuando cambie allá, se vuelve a copiar aquí. Los datos públicos de precios se leen de la rama `portfolio-data` del repo `precios-supermercados-sps`.
 
 El historial completo del antiguo monorepo (commits y ramas) se conserva en este repositorio.
 

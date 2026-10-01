@@ -157,6 +157,8 @@ def desktop_flow(browser: Browser) -> None:
     assert "Retail Price Intelligence" in card.inner_text()
     assert "Playwright" in card.inner_text()
     assert card.locator('a[href="precios-supermercados-sps/b2c/"]').inner_text() == "Ver resultado"
+    for b2c_path in ("precios-supermercados-sps/b2c/", "precios-supermercados-sps/b2c/tegucigalpa/"):
+        assert page.request.get(BASE_URL + b2c_path).status == 200, f"Compra Inteligente no publicada: {b2c_path}"
     assert card.get_attribute("data-project-position") == "PROYECTO PRINCIPAL · 01"
     assert page.locator("#proyectos .mw-card").get_attribute("data-project-position") == "PROYECTO · 02"
     assert page.locator("#mw-view .mw-kicker").count() == 0
