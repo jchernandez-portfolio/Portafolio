@@ -95,7 +95,7 @@
       const code = document.createElement('a');
       code.className = 'portfolio-detail__action portfolio-detail__action--secondary';
       code.dataset.projectDetailCode = 'price';
-      code.href = sourceCode?.href || 'https://github.com/Jchernand3z19/Portafolio/tree/main/precios-supermercados-sps';
+      code.href = sourceCode?.href || 'https://github.com/jchernandez-portfolio/precios-supermercados-sps/tree/main/precios-supermercados-sps';
       code.target = '_blank';
       code.rel = 'noopener';
       code.textContent = copy.viewCode;

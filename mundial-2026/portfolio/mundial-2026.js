@@ -1,6 +1,6 @@
 (() => {
   const DASHBOARD = 'https://script.google.com/macros/s/AKfycbzE26z7tcEbnwLPKSLLW8H_rK7UqwKV17rV8YBJVT4lB4slY0qorsf8cL4cnsys5ShGhw/exec';
-  const REPO = 'https://github.com/Jchernand3z19/Portafolio/tree/main/mundial-2026-predicciones';
+  const REPO = 'https://github.com/jchernandez-portfolio/mundial-2026/tree/main/mundial-2026';
   const BUILD = '20260724-2242';
 
   const preview = [
@@ -57,8 +57,8 @@
     ]
   ];
 
-  const pyBase = 'https://raw.githubusercontent.com/Jchernand3z19/Portafolio/main/';
-  const ghBase = 'https://github.com/Jchernand3z19/Portafolio/blob/main/';
+  const pyBase = 'https://raw.githubusercontent.com/jchernandez-portfolio/mundial-2026/main/';
+  const ghBase = 'https://github.com/jchernandez-portfolio/mundial-2026/blob/main/';
   const python = [
     [
       '01_prediccion_dinamica_2026.py',

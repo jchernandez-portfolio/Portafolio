@@ -1,20 +1,13 @@
-# Router de proyectos del monorepo
+# Portafolio (sitio)
 
-Este repositorio es un monorepo. Antes de actuar, resuelve `PROJECT_ID` y
-`PROJECT_ROOT` con [`.github/project-scopes.yml`](.github/project-scopes.yml), los
-paths modificados y el objetivo del usuario. Después lee el `AGENTS.md` del
-proyecto correspondiente.
+Este repositorio contiene solo el sitio publicado en GitHub Pages. Cada proyecto tiene su propio repositorio en la organización `jchernandez-portfolio`:
 
-- Un número de PR o que un PR sea reciente no determina su proyecto.
-- Los changed paths y workflows registrados son la evidencia primaria de scope.
-- PRs de otro project root quedan fuera de alcance: no modificarlos, fusionarlos,
-  cerrarlos, comentarlos ni usarlos como checkpoint.
-- Un cambio entre proyectos requiere intención explícita y un PR de gobernanza
-  separado cuando afecte infraestructura compartida.
-- Los paths shared son integraciones concretas, no un permiso para mezclar roots.
-- `.agents/skills` contiene metodología compartida y nunca estado mutable de RPI,
-  PAGOS o MUNDIAL.
+- `precios-supermercados-sps`
+- `mundial-2026`
+- `pagos-whatsapp-residencial`
 
-Convenciones nuevas: `[RPI]` + `rpi/`, `[PAGOS]` + `pagos/`, `[MUNDIAL]` +
-`mundial/`, o `[MONOREPO]` + `monorepo/`. Sólo las ramas históricas registradas
-en el contrato están exentas del prefijo de rama.
+Reglas:
+
+- Aquí solo se cambian `index.html`, `script.js`, `css/`, `js/`, `docs/`, `tests/` y las carpetas `<proyecto>/portfolio/`.
+- Los cambios de código, datos o workflows de un proyecto se hacen en su repositorio, no aquí.
+- Antes de publicar, ejecuta `tests/portfolio_frontend_smoke.py` y `tests/project_detail_standard_smoke.py`.
