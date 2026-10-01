@@ -1,130 +1,36 @@
-# Estructura del repositorio
-
-## Objetivo
-
-Mantener un único repositorio público y permitir que cada proyecto se revise sin mezclar sus archivos con los demás.
+# Estructura de la organización
 
 ## Decisión de arquitectura
 
-`Portafolio` es un monorepositorio. Cada proyecto completo se guarda en una carpeta principal de la raíz.
+El antiguo monorepo `Portafolio` se dividió en un repositorio por proyecto dentro de la organización `jchernandez-portfolio`. `Portafolio` queda como el repositorio del sitio.
 
 ```text
-Portafolio/
-├── .github/workflows/
-├── css/
-├── js/
-├── docs/
-├── mundial-2026/
-├── <proyecto-futuro>/
-├── index.html
-├── script.js
-├── PROJECT_TEMPLATE.md
-├── README.md
-└── .gitignore
+jchernandez-portfolio/
+├── Portafolio/                  # sitio GitHub Pages
+├── precios-supermercados-sps/   # código en precios-supermercados-sps/
+├── mundial-2026/                # código en mundial-2026/
+└── pagos-whatsapp-residencial/  # código en pagos-whatsapp-residencial/
 ```
 
-## Archivos compartidos
+Cada repo de proyecto guarda su código en una carpeta con el mismo nombre para que workflows, tests, rutas de datos y despliegues (Vercel) no cambien.
 
-La raíz y las carpetas compartidas contienen solamente elementos utilizados por todo el sitio:
+## Qué queda en `Portafolio`
 
-- `index.html`: página principal publicada con GitHub Pages.
-- `script.js`: cargador mínimo de `js/main.js`.
-- `js/main.js`: navegación, animaciones y carga de proyectos.
-- `js/projects/registry.js`: registro común de tarjetas y vistas.
-- `css/base.css`: base visual del sitio.
-- `css/detail.css`: componentes compartidos de detalle.
-- `css/projects.css`: tarjetas compartidas.
-- `css/responsive.css`: reglas responsive generales.
-- `docs/`: decisiones y reglas generales.
+- `index.html`, `script.js`: página principal y cargador.
+- `css/`, `js/`: estilos, i18n y registro de tarjetas/detalles.
+- `<proyecto>/portfolio/`: capa de presentación de cada proyecto (tarjeta, detalle, assets).
+- `mundial-2026/dashboard/apps-script/`: código que el detalle de Mundial muestra en el sitio.
+- `tests/`: smoke tests del frontend (`portfolio-frontend-qa.yml`).
+- `docs/`: estándares del sitio.
 
-No se deben guardar en la raíz notebooks, datasets, capturas o scripts exclusivos de un proyecto.
+## Datos que consume el sitio
 
-## Carpeta de cada proyecto
-
-La estructura se adapta al trabajo real:
-
-```text
-<slug-del-proyecto>/
-├── README.md
-├── requirements.txt
-├── .env.example
-├── .gitignore
-├── portfolio/
-│   ├── <slug>.js
-│   ├── <slug>.css
-│   └── assets/
-├── config/
-├── data/
-├── dashboard/
-├── docs/
-├── notebooks/
-├── reports/
-├── scripts/
-├── src/
-└── tests/
-```
-
-Solo se crean carpetas con contenido real.
-
-## Proyecto Mundial 2026
-
-La organización actual es:
-
-```text
-mundial-2026/
-├── README.md
-├── requirements.txt
-├── .env.example
-├── .gitignore
-├── portfolio/
-│   ├── mundial-2026.js
-│   ├── mundial-2026.css
-│   └── assets/
-│       ├── mundial-dashboard-preview.svg
-│       └── dashboard/
-├── dashboard/
-│   └── apps-script/
-├── scripts/
-└── src/
-```
-
-Todos los recursos exclusivos que antes estaban en `assets/mundial/`, `assets/code/apps-script/`, `css/projects/mundial.css`, `js/projects/mundial.js` y `mundial-2026-predicciones/` quedan consolidados dentro de `mundial-2026/`.
-
-## GitHub Actions
-
-GitHub solo ejecuta workflows ubicados en `.github/workflows/`. Esta es la única excepción a la regla de que todo archivo específico permanezca dentro de la carpeta del proyecto.
-
-Los nombres deben identificar el proyecto:
-
-```text
-.github/workflows/mundial-2026-prediccion-diaria.yml
-.github/workflows/mundial-2026-prediccion-completa.yml
-.github/workflows/mundial-2026-prediccion-viva.yml
-```
-
-Cada workflow debe usar:
-
-```yaml
-defaults:
-  run:
-    working-directory: mundial-2026
-```
+- Precios: `https://raw.githubusercontent.com/jchernandez-portfolio/precios-supermercados-sps/portfolio-data/...` (rama publicada por el workflow `precios-supermercados-sps-portfolio-data-sync.yml` de ese repo).
+- Mundial: assets estáticos en `mundial-2026/portfolio/assets/`; los scripts Python se leen de `raw.githubusercontent.com/jchernandez-portfolio/mundial-2026/main/`.
 
 ## Convenciones
 
-- Carpetas y repositorios en minúsculas y guiones.
-- Python en `snake_case.py`.
-- Un README por proyecto.
+- Repositorios en minúsculas y guiones.
+- Un README por repositorio.
 - No publicar credenciales, tokens, cookies o datos privados.
-- No crear proyectos ficticios ni carpetas vacías.
-- Trabajar mediante rama y Pull Request para reorganizaciones importantes.
-
-## Proceso para agregar un proyecto
-
-1. Crear `<slug>/` en la raíz.
-2. Agregar su README y estructura real.
-3. Guardar sus archivos visuales en `<slug>/portfolio/`.
-4. Registrar sus rutas en `js/main.js`.
-5. Crear su workflow en `.github/workflows/` cuando sea necesario.
-6. Verificar enlaces, consola, diseño responsive y seguridad.
-7. Crear un Pull Request hacia `main`.
+- Cambios grandes mediante rama y Pull Request.
