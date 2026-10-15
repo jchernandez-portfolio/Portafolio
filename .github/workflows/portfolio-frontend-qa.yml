@@ -9,6 +9,7 @@ on:
       - "js/**"
       - "**/portfolio/**"
       - "precios-supermercados-sps/b2c/**"
+      - "precios-supermercados-sps/super-compras/**"
       - "tests/portfolio_frontend_smoke.py"
       - "tests/project_detail_standard_smoke.py"
       - ".github/workflows/portfolio-frontend-qa.yml"
@@ -22,6 +23,7 @@ on:
       - "js/**"
       - "**/portfolio/**"
       - "precios-supermercados-sps/b2c/**"
+      - "precios-supermercados-sps/super-compras/**"
       - "tests/portfolio_frontend_smoke.py"
       - "tests/project_detail_standard_smoke.py"
       - ".github/workflows/portfolio-frontend-qa.yml"
@@ -62,6 +64,7 @@ jobs:
           node --check js/project-card-standard.js
           node --check js/project-detail-standard.js
           find . -path '*/portfolio/*.js' -print0 | xargs -0 -n1 node --check
+          find precios-supermercados-sps/super-compras -name '*.js' -print0 | xargs -0 -n1 node --check
 
       - name: Ejecutar smoke bilingüe, responsive y accesible
         run: python tests/portfolio_frontend_smoke.py
