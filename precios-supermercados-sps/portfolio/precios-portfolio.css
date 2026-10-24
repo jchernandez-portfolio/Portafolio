@@ -398,15 +398,21 @@
   .price-flow__step::after { display: none; }
 }
 
+@media (max-width: 760px) {
+  .price-card__signal.sc-card__stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .sc-card__stats span { padding: 12px 14px; }
+  .sc-card__stats span:first-child { grid-column: span 3; }
+}
+
 @media (max-width: 900px) {
   .price-hero { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {
-  .price-card__signal.sc-card__stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-  .sc-card__stats span { padding: 12px 14px; }
-  .sc-card__stats span:first-child { grid-column: span 3; }
   .sc-card__phones { height: 290px; }
+  .sc-card__stats small { font-size: 10px; letter-spacing: .02em; }
+  .sc-card__stats span { padding: 12px 10px; }
+  .sc-card__pulse { border-radius: 14px; }
   .sc-card__phones .is-left,
   .sc-card__phones .is-right { margin-inline: -48px; }
   .price-flow,
