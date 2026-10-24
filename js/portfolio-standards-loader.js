@@ -1,5 +1,5 @@
 (() => {
-  const BUILD = '20260904-project-detail-standard-v1';
+  const BUILD = '20261024-super-compras-v1';
 
   function loadStyle(href) {
     if (document.querySelector(`link[data-portfolio-standard="${href}"]`)) return;

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Súper Compras · Caso de estudio — Juan Carlos Hernández Ramos</title>
+<meta name="description" content="Cómo construí Súper Compras: un comparador de precios de supermercados de Honduras que captura, valida, homologa y publica datos reales todos los días sin intervención manual.">
+<meta property="og:title" content="Súper Compras · Caso de estudio">
+<meta property="og:description" content="Precios de 6 cadenas y 11 sucursales en San Pedro Sula y Tegucigalpa, actualizados cada día con Python, GitHub Actions y control de calidad público.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://jchernandez-portfolio.github.io/Portafolio/precios-supermercados-sps/portfolio/caso/">
+<meta property="og:image" content="https://jchernandez-portfolio.github.io/Portafolio/precios-supermercados-sps/portfolio/assets/web-producto.webp">
+<meta name="theme-color" content="#0a0e1a">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>JC</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="caso.css?v=20261024-1">
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="top">
+  <div class="wrap top__row">
+    <a class="brand" href="../../../#proyectos"><b>JC</b> HERNANDEZ</a>
+    <nav class="top__nav" aria-label="Secciones del caso">
+      <a href="#problema">Problema</a>
+      <a href="#app">La app</a>
+      <a href="#arquitectura">Arquitectura</a>
+      <a href="#calidad">Calidad</a>
+      <a href="#evolucion">Evolución</a>
+    </nav>
+    <a class="btn btn--small" href="../../super-compras/">Abrir la app</a>
+  </div>
+</header>
+
+<main id="contenido">
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div>
+        <p class="eyebrow">Caso de estudio · proyecto principal</p>
+        <h1>Súper Compras: un comparador de precios que se actualiza solo, todos los días</h1>
+        <p class="lead">Precios reales de La Colonia, Colonial, Walmart, PriceSmart, Los Andes y Paiz en San Pedro Sula y Tegucigalpa. Detrás hay un sistema completo de datos —captura, validación, homologación, publicación y auditoría— que corre sin intervención manual.</p>
+        <div class="actions">
+          <a class="btn" href="../../super-compras/">Usar Súper Compras</a>
+          <a class="btn btn--ghost" href="https://github.com/jchernandez-portfolio/precios-supermercados-sps" target="_blank" rel="noopener noreferrer">Ver código</a>
+          <a class="btn btn--ghost" href="https://github.com/jchernandez-portfolio/precios-supermercados-sps/tree/calidad-datos" target="_blank" rel="noopener noreferrer">Registro de errores</a>
+        </div>
+      </div>
+      <figure class="hero__shot">
+        <img src="../assets/web-producto.webp" width="1440" height="900" alt="Súper Compras en escritorio: la leche Sula de 946 ml en cuatro supermercados, con el más barato marcado.">
+      </figure>
+    </div>
+    <div class="wrap">
+      <dl class="band" data-live-band>
+        <div><dt>productos con precio</dt><dd data-live="products">67,377</dd></div>
+        <div><dt>cadenas</dt><dd data-live="chains">6</dd></div>
+        <div><dt>sucursales</dt><dd data-live="stores">11</dd></div>
+        <div><dt>sucursales al día</dt><dd data-live="fresh">9 / 11</dd></div>
+        <div><dt>última publicación</dt><dd data-live="asOf">24 oct</dd></div>
+      </dl>
+      <p class="band__note" data-live-note>Cifras leídas en vivo del catálogo publicado.</p>
+    </div>
+  </section>
+
+  <section class="section" id="problema">
+    <div class="wrap two">
+      <div>
+        <p class="eyebrow">01 · El problema</p>
+        <h2>Comparar precios de súper en Honduras es trabajo manual</h2>
+      </div>
+      <div class="prose">
+        <p>Cada cadena publica su catálogo en un sitio distinto, con nombres, tamaños y unidades escritos a su manera: “Leche Uht Sula Entera 0.946 Lt”, “Sula leche entera 946 ml”, “SULA Leche Entera 946ml”. Saber dónde conviene comprar una lista completa implica abrir cinco sitios y hacer cuentas a mano.</p>
+        <p>El reto no era solo descargar precios: era <strong>confiar en ellos</strong>. Los catálogos traen errores (“1100 Lt” en una gaseosa de 1.1 L, “397 Oz” que en realidad son gramos), productos que cambian de un día a otro y sitios que a veces responden incompletos.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="app">
+    <div class="wrap">
+      <p class="eyebrow">02 · La solución</p>
+      <h2>Una web app pensada para el celular</h2>
+      <p class="sub">Instalable como aplicación (PWA), funciona sin conexión con lo último que cargó y no pide cuenta ni datos personales: tu lista se guarda en tu dispositivo.</p>
+      <div class="phones">
+        <figure><img src="../assets/app-inicio.webp" width="520" height="1125" loading="lazy" alt="Inicio de Súper Compras con las ofertas del día."><figcaption><b>Inicio</b> Ofertas del día y la hora exacta de la última actualización.</figcaption></figure>
+        <figure><img src="../assets/app-buscar.webp" width="520" height="1125" loading="lazy" alt="Resultados de búsqueda de leche entera."><figcaption><b>Búsqueda</b> Tamaño y precio por kg/L para comparar presentaciones distintas.</figcaption></figure>
+        <figure><img src="../assets/app-producto.webp" width="520" height="1125" loading="lazy" alt="Detalle de un producto con su precio en cada supermercado."><figcaption><b>Producto</b> El mismo artículo en cada súper; el más barato, marcado.</figcaption></figure>
+        <figure><img src="../assets/app-compra.webp" width="520" height="1125" loading="lazy" alt="Resumen de Mi compra con el costo total en cada supermercado."><figcaption><b>Mi compra</b> Cuánto cuesta la lista completa en cada supermercado.</figcaption></figure>
+      </div>
+      <figure class="wide-shot">
+        <img src="../assets/web-buscar.webp" width="1440" height="900" loading="lazy" alt="Búsqueda en escritorio con tarjetas de producto y fotos.">
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="arquitectura">
+    <div class="wrap">
+      <p class="eyebrow">03 · Arquitectura</p>
+      <h2>Del sitio del supermercado a tu celular, sin tocar nada a mano</h2>
+      <p class="sub">Una cadena de workflows de GitHub Actions corre cada mañana. Cada etapa solo avanza si la anterior dejó datos completos y consistentes.</p>
+      <div class="diagram" role="img" aria-label="Flujo: sitios públicos, captura, validación, base Turso, homologación, catálogo estático, Súper Compras y auditoría de calidad.">
+        <svg viewBox="0 0 1120 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#34d399"/></marker>
+          </defs>
+          <g class="node"><rect x="10" y="40" width="160" height="96" rx="12"/><text x="90" y="80">Sitios públicos</text><text class="small" x="90" y="104">6 cadenas · 11 sucursales</text></g>
+          <g class="node node--accent"><rect x="200" y="40" width="160" height="96" rx="12"/><text x="280" y="80">Captura</text><text class="small" x="280" y="104">Python · Playwright</text></g>
+          <g class="node"><rect x="390" y="40" width="160" height="96" rx="12"/><text x="470" y="80">Validación</text><text class="small" x="470" y="104">conteos · cuarentena</text></g>
+          <g class="node"><rect x="580" y="40" width="160" height="96" rx="12"/><text x="660" y="80">Turso</text><text class="small" x="660" y="104">histórico · maestro</text></g>
+          <g class="node"><rect x="770" y="40" width="160" height="96" rx="12"/><text x="850" y="80">Homologación</text><text class="small" x="850" y="104">GS1 · libra · categorías</text></g>
+          <g class="node node--accent"><rect x="950" y="40" width="160" height="96" rx="12"/><text x="1030" y="80">Súper Compras</text><text class="small" x="1030" y="104">GitHub Pages · PWA</text></g>
+          <g class="node"><rect x="770" y="190" width="160" height="80" rx="12"/><text x="850" y="226">Catálogo estático</text><text class="small" x="850" y="248">JSON por ciudad</text></g>
+          <g class="node node--warn"><rect x="390" y="190" width="340" height="80" rx="12"/><text x="560" y="226">Auditoría de calidad · 3 veces al día</text><text class="small" x="560" y="248">registro público de errores y frescura por sucursal</text></g>
+          <path class="edge" d="M170 88h28"/><path class="edge" d="M360 88h28"/><path class="edge" d="M550 88h28"/><path class="edge" d="M740 88h28"/>
+          <path class="edge" d="M850 136v52"/><path class="edge" d="M930 230h60v-92"/><path class="edge edge--dash" d="M770 230h-38"/>
+        </svg>
+      </div>
+      <div class="cards three">
+        <article><h3>Captura que se defiende sola</h3><p>Cada sucursal se reconcilia contra su propio catálogo: el número de productos, la identidad y los precios deben cuadrar. Si un sitio responde incompleto, ese día no se publica a medias; se conserva el último dato bueno y la app avisa su fecha.</p></article>
+        <article><h3>Tolerancias medidas, no a ciegas</h3><p>El sitemap de Colonial llega atrasado: se acepta hasta 1 % de desfase. Un producto con precios contradictorios en Los Andes queda en cuarentena con evidencia (máximo 0.5 % del catálogo) en vez de detener toda la cadena.</p></article>
+        <article><h3>Publicación sin exponer la base</h3><p>La app no consulta la base de datos: lee un catálogo estático por ciudad, partido en 390 archivos pequeños. La carga inicial pesa unos 9 KB comprimidos y el sitio funciona con una política de seguridad de contenido estricta.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="homologacion">
+    <div class="wrap two">
+      <div>
+        <p class="eyebrow">04 · Homologación</p>
+        <h2>Que “0.946 Lt” y “946ml” sean lo mismo</h2>
+        <p class="sub">El contenido neto se normaliza con las reglas de GS1 (el estándar detrás del código de barras) y se aplica igual a todo el catálogo para que las comparaciones sean coherentes.</p>
+      </div>
+      <div class="table-wrap" tabindex="0">
+        <table>
+          <thead><tr><th>Lo que publica el súper</th><th>Lo que muestra la app</th><th>Regla</th></tr></thead>
+          <tbody>
+            <tr><td>Leche Uht Sula Entera 0.946 Lt</td><td>946 ml · L 46.46 por L</td><td>Contenido neto GS1</td></tr>
+            <tr><td>Gaseosa Sprite 1100 Lt Pet</td><td>1.1 L</td><td>Mililitros escritos como litros</td></tr>
+            <tr><td>Lenteja Goya 397 Oz</td><td>397 g</td><td>Gramos escritos como onzas</td></tr>
+            <tr><td>Pollo Entero Norteño (código 2…)</td><td>L 42.00 por libra</td><td>Peso variable GS1</td></tr>
+            <tr><td>Rábano Rojo Mazo</td><td>1 unidad</td><td>Artículo sin medida</td></tr>
+            <tr><td>Dramamine 50 mg caja 24 tabletas</td><td>24 unidades</td><td>La dosis no es el peso</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="calidad">
+    <div class="wrap">
+      <p class="eyebrow">05 · Calidad y transparencia</p>
+      <h2>Un registro de errores público que se alimenta solo</h2>
+      <p class="sub">Tres veces al día una auditoría revisa lo que muestra la app con la misma lógica que usa la página y publica el resultado en la rama <code>calidad-datos</code> del repositorio.</p>
+      <div class="kpis">
+        <div><b data-live="issues">1,692</b><span>alertas en seguimiento hoy (la mayoría, productos sin presentación)</span></div>
+        <div><b data-live="fixedInWeb">43</b><span>datos mal publicados por el súper que la web corrige con un patrón seguro</span></div>
+        <div><b data-live="confirmed">34</b><span>errores revisados a mano, con origen, solución y PR</span></div>
+      </div>
+      <div class="cards three">
+        <article><h3>Corregir</h3><p>Si el error sigue un patrón seguro (“1100 Lt”, “40 0Ml”), la web muestra el valor correcto y lo marca como “corregido en la web”; en el súper sigue mal.</p></article>
+        <article><h3>Esconder</h3><p>Si un tamaño es imposible (más de 50 kg en un producto de súper) o el precio por kg sale 100 veces fuera de rango, se oculta el tamaño y se muestra solo el precio.</p></article>
+        <article><h3>Avisar</h3><p>Si una sucursal no se pudo capturar hoy, el encabezado y el producto dicen de qué fecha es ese precio en lugar de presentarlo como de hoy.</p></article>
+      </div>
+      <div class="fresh">
+        <h3>Captura de hoy por sucursal</h3>
+        <div class="table-wrap" tabindex="0">
+          <table data-live-fresh>
+            <thead><tr><th>Ciudad</th><th>Supermercado</th><th>Estado</th></tr></thead>
+            <tbody><tr><td colspan="3">Consultando el catálogo publicado…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="evolucion">
+    <div class="wrap">
+      <p class="eyebrow">06 · Evolución</p>
+      <h2>Cuatro meses, de un scraper a un producto</h2>
+      <ol class="timeline">
+        <li><b>Junio 2026</b><h3>Primer scraper</h3><p>Comisariato Los Andes: captura completa con evidencia de cada ejecución y base histórica de precios.</p></li>
+        <li><b>Septiembre 2026</b><h3>Seis cadenas, once sucursales</h3><p>La Colonia, Colonial, Walmart, PriceSmart, Los Andes y Paiz con captura programada en GitHub Actions.</p></li>
+        <li><b>Inicios de octubre</b><h3>Datos que se pueden comparar</h3><p>Base en Turso, producto maestro, emparejamiento por código de barras y un árbol común de categorías.</p></li>
+        <li><b>10 de octubre</b><h3>Lanzamiento de Súper Compras</h3><p>Web app para el consumidor, dos ciudades y fotos de producto optimizadas.</p></li>
+        <li><b>15–16 de octubre</b><h3>Coherencia en todo el catálogo</h3><p>Contenido neto GS1, precio por libra para productos pesados en tienda, red de seguridad para datos absurdos y registro de errores.</p></li>
+        <li class="is-now"><b>24 de octubre</b><h3>Captura diaria robusta</h3><p>Tolerancias medidas para sitios inestables, cuarentena con evidencia y aviso visible cuando un precio no es del día.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="siguiente">
+    <div class="wrap two">
+      <div>
+        <p class="eyebrow">07 · Lo que sigue</p>
+        <h2>Próximos pasos</h2>
+      </div>
+      <ul class="next">
+        <li><b>Foto para todos los productos</b> en dos tamaños (320 px y 800 px) servidas desde un almacenamiento de imágenes dedicado, fuera del repositorio.</li>
+        <li><b>Completar presentaciones</b> faltantes con fuentes abiertas de productos (Open Food Facts) usando el código de barras.</li>
+        <li><b>Emparejar productos sin código de barras</b> entre cadenas con reglas verificables, sin unir artículos distintos.</li>
+        <li><b>Historia de precios</b> en la app: cómo ha cambiado el precio de un producto en las últimas semanas.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="tecnologia">
+    <div class="wrap two">
+      <div>
+        <p class="eyebrow">08 · Tecnología y habilidades</p>
+        <h2>Lo que demuestra este proyecto</h2>
+        <p class="sub">Más de 3,100 pruebas automáticas, 12 workflows y más de 2,600 commits.</p>
+      </div>
+      <div class="skills">
+        <div><h3>Datos</h3><p>Web scraping responsable de fuentes públicas, validación y reconciliación, modelado histórico, normalización con estándares (GS1).</p></div>
+        <div><h3>Automatización</h3><p>Pipelines programados en GitHub Actions con dependencias entre etapas, reintentos, cuarentena y auditoría.</p></div>
+        <div><h3>Producto</h3><p>Web app instalable sin framework, rápida en celulares de gama media, accesible y con lenguaje claro para el consumidor.</p></div>
+        <div><h3>Calidad</h3><p>Pruebas automatizadas, seguridad por defecto (solo datos públicos, sin lecturas directas a la base) y transparencia sobre los errores.</p></div>
+      </div>
+    </div>
+    <div class="wrap actions actions--end">
+      <a class="btn" href="../../super-compras/">Usar Súper Compras</a>
+      <a class="btn btn--ghost" href="https://github.com/jchernandez-portfolio/precios-supermercados-sps" target="_blank" rel="noopener noreferrer">Ver repositorio</a>
+      <a class="btn btn--ghost" href="../../../#proyectos">Volver al portafolio</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__row">
+    <span>© 2026 Juan Carlos Hernández Ramos</span>
+    <span><a href="https://www.linkedin.com/in/juan-carlos-hernandez-ramos" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="https://github.com/Jchernand3z19" target="_blank" rel="noopener noreferrer">GitHub</a></span>
+  </div>
+</footer>
+<script src="../super-compras-live.js?v=20261024-1" defer></script>
+<script src="caso.js?v=20261024-1" defer></script>
+</body>
+</html>

@@ -2,14 +2,14 @@
   const COPY = {
     es: {
       projects: 'Proyectos',
-      priceMeta: 'PROYECTO PRINCIPAL · 01 · RETAIL PRICE INTELLIGENCE',
+      priceMeta: 'PROYECTO PRINCIPAL · 01 · PRODUCTO DIGITAL CON DATOS REALES',
       mundialMeta: 'PROYECTO · 02 · ANÁLISIS PREDICTIVO · DASHBOARD REAL',
       viewResult: 'Ver resultado',
       viewCode: 'Ver código'
     },
     en: {
       projects: 'Projects',
-      priceMeta: 'FEATURED PROJECT · 01 · RETAIL PRICE INTELLIGENCE',
+      priceMeta: 'FEATURED PROJECT · 01 · DIGITAL PRODUCT WITH REAL DATA',
       mundialMeta: 'PROJECT · 02 · PREDICTIVE ANALYSIS · LIVE DASHBOARD',
       viewResult: 'View result',
       viewCode: 'View code'
@@ -87,7 +87,8 @@
       result.dataset.projectDetailResult = 'price';
       result.textContent = copy.viewResult;
       result.addEventListener('click', () => {
-        view.querySelector('#price-sample-title')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const app = view.querySelector('[data-sc-app]');
+        if (app) window.location.href = app.href;
       });
 
       const sourceCode = document.querySelector('#proyectos .price-card .portfolio-card__action--tertiary')
@@ -95,7 +96,7 @@
       const code = document.createElement('a');
       code.className = 'portfolio-detail__action portfolio-detail__action--secondary';
       code.dataset.projectDetailCode = 'price';
-      code.href = sourceCode?.href || 'https://github.com/jchernandez-portfolio/precios-supermercados-sps/tree/main/precios-supermercados-sps';
+      code.href = sourceCode?.href || 'https://github.com/jchernandez-portfolio/precios-supermercados-sps';
       code.target = '_blank';
       code.rel = 'noopener';
       code.textContent = copy.viewCode;

@@ -1,5 +1,5 @@
 (() => {
-  const BUILD = '20260904-price-heatmap-v1';
+  const BUILD = '20261024-super-compras-v1';
 
   function loadScript(src) {
     return new Promise((resolve, reject) => {
@@ -225,13 +225,12 @@
     const projectStyles = [
       'css/i18n.css',
       'precios-supermercados-sps/portfolio/precios-portfolio.css',
-      'precios-supermercados-sps/portfolio/precios-portfolio-current-state.css',
       'mundial-2026/portfolio/mundial-2026.css'
     ];
 
     const projectModules = [
+      'precios-supermercados-sps/portfolio/super-compras-live.js',
       'precios-supermercados-sps/portfolio/precios-portfolio.js',
-      'precios-supermercados-sps/portfolio/precios-portfolio-current-state.js',
       'mundial-2026/portfolio/mundial-2026.js',
       'mundial-2026/portfolio/mundial-2026-i18n.js',
       'mundial-2026/portfolio/mundial-2026-a11y.js'

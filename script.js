@@ -1,5 +1,5 @@
 (() => {
-  const BUILD = '20260904-price-heatmap-v1';
+  const BUILD = '20261024-super-compras-v1';
 
   function loadStandards(attempt = 0) {
     const projectsReady = Boolean(
