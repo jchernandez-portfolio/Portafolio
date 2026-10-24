@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import contextlib
-import json
 import socket
 import subprocess
 import sys
@@ -14,9 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 HOST = "127.0.0.1"
 PORT = 8765
 BASE_URL = f"http://{HOST}:{PORT}/"
-SAMPLE_PATH = ROOT / "precios-supermercados-sps" / "portfolio" / "sample-data.json"
-SAFE_SAMPLE_SCHEMA = "precios-sps-safe-portfolio-sample/v1"
-SAFE_POLICY = "fail_closed_strong_identity_and_commercial_consistency"
+APP_PATH = "precios-supermercados-sps/super-compras/"
+CASE_PATH = "precios-supermercados-sps/portfolio/caso/"
 
 
 def wait_for_server(timeout: float = 10.0) -> None:
@@ -53,21 +51,6 @@ def attach_runtime_guards(page: Page) -> tuple[list[str], list[str]]:
     return page_errors, bad_local_responses
 
 
-def load_public_sample() -> dict[str, object]:
-    return json.loads(SAMPLE_PATH.read_text(encoding="utf-8"))
-
-
-def public_sample_is_published() -> bool:
-    sample = load_public_sample()
-    return (
-        sample.get("schema") == SAFE_SAMPLE_SCHEMA
-        and sample.get("comparison_policy") == SAFE_POLICY
-        and isinstance(sample.get("rows"), list)
-        and sample.get("row_count") == len(sample["rows"])
-        and bool(sample["rows"])
-    )
-
-
 def wait_for_portfolio(page: Page) -> None:
     page.goto(BASE_URL, wait_until="domcontentloaded")
     page.wait_for_selector("#portfolio-language-switcher")
@@ -100,46 +83,37 @@ def assert_project_order(page: Page) -> None:
     assert cards.nth(1).get_attribute("data-portfolio-project") == "mundial-2026"
 
 
-def assert_price_evidence(dialog) -> None:
-    proof = dialog.locator(".price-proof")
-    assert proof.count() == 1
-    proof_text = proof.inner_text()
-    assert "Comisariato Los Andes" in proof_text
-    assert "6,646" in proof_text
-    assert "120" in proof_text
-    assert "9920279680" in proof_text
-    assert proof.locator('a[href="https://comisariatolosandes.com/"]').count() == 1
-    assert proof.locator('a[href*="reports/comisariato-los-andes/2026-09-04-full"]').count() == 1
-    assert proof.locator('a[href*="src/precios_supermercados"]').count() == 1
+def assert_price_detail(dialog, locale: str) -> None:
+    """Detalle de Súper Compras: capturas, flujo, calidad, evolución y enlaces."""
+    assert dialog.locator("#price-title").inner_text() == "Súper Compras"
+    assert dialog.locator(".sc-shots img").count() == 4
+    flow = dialog.locator("#price-flow-title").locator("xpath=../..").inner_text()
+    assert ("Capture" if locale == "en" else "Captura") in flow
+    assert dialog.locator("#price-quality-title").count() == 1
+    assert dialog.locator("#price-evo-title").count() == 1
+    assert dialog.locator("#price-tech-title").count() == 1
+    assert dialog.locator(f'a[href="{APP_PATH}"]').count() >= 1
+    assert dialog.locator(f'a[href="{CASE_PATH}"]').count() >= 1
+    assert dialog.locator('a[href*="tree/calidad-datos"]').count() == 1
+    # Sin red: el panel en vivo cae a las cifras verificadas.
+    assert "67" in dialog.locator("[data-sc-live-panel]").inner_text()
 
 
-def assert_comparison_state(dialog) -> None:
-    section = dialog.locator("#price-sample-title").locator("xpath=../..")
-    assert "strong identity" in section.locator("#price-sample-title").inner_text().lower()
-    assert section.locator('[data-price-ranking-legend]').count() == 0
-    note = section.locator(".price-note")
-    table_wrap = section.locator(".price-table-wrap")
-
-    if public_sample_is_published():
-        sample = load_public_sample()
-        table_wrap.wait_for(state="visible", timeout=5000)
-        assert note.get_attribute("data-comparison-safety") == "verified-strong-identity"
-        rows = table_wrap.locator("tbody tr")
-        assert rows.count() == sample["row_count"]
-        first = sample["rows"][0]
-        table_text = table_wrap.inner_text()
-        assert first["canonical_gtin"] in table_text
-        assert "La Colonia" in table_text
-        assert "Walmart" in table_text
-        for offer in first["offers"]:
-            assert offer["source_name"] in table_text
-    else:
-        assert table_wrap.is_hidden()
-        assert note.get_attribute("data-comparison-safety") == "fail-closed"
-        text = note.inner_text().lower()
-        assert "fail-closed" in text
-        assert "passion jaguar" in text
-        assert "passion especial" in text
+def case_page_flow(browser: Browser) -> None:
+    context = browser.new_context(viewport={"width": 390, "height": 844})
+    local_only(context)
+    page = context.new_page()
+    page_errors, bad_local_responses = attach_runtime_guards(page)
+    page.goto(BASE_URL + CASE_PATH, wait_until="domcontentloaded")
+    page.wait_for_selector("h1")
+    assert "Súper Compras" in page.locator("h1").inner_text()
+    page.wait_for_function("() => !document.querySelector('[data-live-fresh] tbody')?.innerText.includes('Consultando')")
+    assert page.locator(".phones img").count() == 4
+    assert page.locator(f'a[href="../../super-compras/"]').count() >= 1
+    assert_no_global_overflow(page)
+    assert page_errors == [], page_errors
+    assert bad_local_responses == [], bad_local_responses
+    context.close()
 
 
 def desktop_flow(browser: Browser) -> None:
@@ -153,12 +127,13 @@ def desktop_flow(browser: Browser) -> None:
     assert page.locator("#nav-links").get_by_text("Inicio", exact=True).count() == 1
     assert_project_order(page)
     card = page.locator("#proyectos .price-card")
-    assert "Retail Price Intelligence para supermercados" in card.locator("h3").inner_text()
-    assert "Retail Price Intelligence" in card.inner_text()
+    assert "Súper Compras" in card.locator("h3").inner_text()
     assert "Playwright" in card.inner_text()
-    assert card.locator('a[href="precios-supermercados-sps/b2c/"]').inner_text() == "Ver resultado"
-    for b2c_path in ("precios-supermercados-sps/b2c/", "precios-supermercados-sps/b2c/tegucigalpa/"):
-        assert page.request.get(BASE_URL + b2c_path).status == 200, f"Compra Inteligente no publicada: {b2c_path}"
+    assert "67,377" in card.inner_text()
+    assert card.locator(f'a[href="{APP_PATH}"]').inner_text() == "Ver resultado"
+    assert card.locator(".sc-card__phones img").count() == 3
+    for path in (APP_PATH, CASE_PATH):
+        assert page.request.get(BASE_URL + path).status == 200, f"Página no publicada: {path}"
     assert card.get_attribute("data-project-position") == "PROYECTO PRINCIPAL · 01"
     assert page.locator("#proyectos .mw-card").get_attribute("data-project-position") == "PROYECTO · 02"
     assert page.locator("#mw-view .mw-kicker").count() == 0
@@ -168,8 +143,7 @@ def desktop_flow(browser: Browser) -> None:
     assert page.locator("html").get_attribute("lang") == "en"
     assert page.locator("#nav-links").get_by_text("Home", exact=True).count() == 1
     assert page.evaluate("localStorage.getItem('portfolio.locale.v1')") == "en"
-    assert "Retail Price Intelligence for grocery" in page.locator("#proyectos .price-card h3").inner_text()
-    assert "Retail Price Intelligence" in page.locator("#proyectos .price-card").inner_text()
+    assert "prices from 6 supermarket chains" in page.locator("#proyectos .price-card h3").inner_text()
     assert "World Cup 2026" in page.locator("#proyectos .mw-card h3").inner_text()
     assert page.locator("#proyectos .price-card").get_attribute("data-project-position") == "FEATURED PROJECT · 01"
     assert page.locator("#proyectos .mw-card").get_attribute("data-project-position") == "PROJECT · 02"
@@ -180,14 +154,7 @@ def desktop_flow(browser: Browser) -> None:
     opener.click()
     dialog = page.locator("#price-project-view")
     assert dialog.evaluate("element => element.open") is True
-    assert dialog.locator("#price-title").inner_text() == "Price intelligence for better shopping and decisions"
-    assert "Web Scraping" in dialog.locator("#price-flow-title").locator("xpath=../..").inner_text()
-    assert_price_evidence(dialog)
-    assert_comparison_state(dialog)
-    assert dialog.locator("#price-quality-title").count() == 0
-    assert dialog.locator("#price-cap-title").count() == 1
-    assert dialog.locator("#price-value-title").count() == 1
-    assert dialog.locator('a[href="precios-supermercados-sps/b2c/"]').inner_text() == "Use Smart Shopping"
+    assert_price_detail(dialog, "en")
     assert page.locator(":focus").get_attribute("data-price-close") is not None
     page.keyboard.press("Escape")
     assert dialog.evaluate("element => element.open") is False
@@ -280,7 +247,7 @@ def responsive_flow(browser: Browser, width: int, height: int) -> None:
         assert dialog.evaluate("element => element.open") is True
         rect = dialog.bounding_box()
         assert rect is not None and rect["width"] <= width + 1, rect
-        assert_comparison_state(dialog)
+        assert dialog.locator(".sc-shots").is_visible()
         assert_no_global_overflow(page)
         page.keyboard.press("Escape")
     else:
@@ -311,6 +278,7 @@ def main() -> int:
             try:
                 desktop_flow(browser)
                 storage_blocked_flow(browser)
+                case_page_flow(browser)
                 responsive_flow(browser, 320, 720)
                 responsive_flow(browser, 390, 844)
                 responsive_flow(browser, 768, 900)
