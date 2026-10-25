@@ -3,7 +3,8 @@
 // (super-compras-live.js) y caen a valores verificados si GitHub no responde.
 (() => {
   const PROJECT_ID = 'precios-supermercados';
-  const APP_URL = 'precios-supermercados-sps/super-compras/';
+  // La app se publica desde su propio repositorio (GitHub Pages); aquí sólo se enlaza.
+  const APP_URL = 'https://jchernandez-portfolio.github.io/precios-supermercados-sps/super-compras/';
   const CASE_URL = 'precios-supermercados-sps/portfolio/caso/';
   const REPO = 'https://github.com/jchernandez-portfolio/precios-supermercados-sps';
   const QUALITY_URL = `${REPO}/tree/calidad-datos`;
