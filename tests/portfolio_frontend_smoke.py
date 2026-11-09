@@ -13,7 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 HOST = "127.0.0.1"
 PORT = 8765
 BASE_URL = f"http://{HOST}:{PORT}/"
-APP_PATH = "precios-supermercados-sps/super-compras/"
+APP_PATH = "https://jchernandez-portfolio.github.io/precios-supermercados-sps/super-compras/"
+APP_REDIRECT = "precios-supermercados-sps/super-compras/"
 CASE_PATH = "precios-supermercados-sps/portfolio/caso/"
 
 
@@ -109,7 +110,7 @@ def case_page_flow(browser: Browser) -> None:
     assert "Súper Compras" in page.locator("h1").inner_text()
     page.wait_for_function("() => !document.querySelector('[data-live-fresh] tbody')?.innerText.includes('Consultando')")
     assert page.locator(".phones img").count() == 4
-    assert page.locator(f'a[href="../../super-compras/"]').count() >= 1
+    assert page.locator(f'a[href="{APP_PATH}"]').count() >= 1
     assert_no_global_overflow(page)
     assert page_errors == [], page_errors
     assert bad_local_responses == [], bad_local_responses
@@ -132,8 +133,10 @@ def desktop_flow(browser: Browser) -> None:
     assert "67,377" in card.inner_text()
     assert card.locator(f'a[href="{APP_PATH}"]').inner_text() == "Ver resultado"
     assert card.locator(".sc-card__phones img").count() == 3
-    for path in (APP_PATH, CASE_PATH):
+    for path in (APP_REDIRECT, CASE_PATH):
         assert page.request.get(BASE_URL + path).status == 200, f"Página no publicada: {path}"
+    redirect = page.request.get(BASE_URL + APP_REDIRECT).text()
+    assert APP_PATH in redirect and "location.replace" in redirect
     assert card.get_attribute("data-project-position") == "PROYECTO PRINCIPAL · 01"
     assert page.locator("#proyectos .mw-card").get_attribute("data-project-position") == "PROYECTO · 02"
     assert page.locator("#mw-view .mw-kicker").count() == 0
